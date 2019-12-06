@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="js/jquery-3.3.1.js"></script>
+
+    <script>
+        $(function () {
+            $.get("ProvinceServlet",{},function (data) {
+                var province = $("#province");
+                var str = '<option>--- 请选择 ---</option>';
+                for (var i = 0; i < data.length; i++) {
+                    var province_name = data[i].name;
+                    str += '<option'+province_name+">"+province_name+'</option>';
+                }
+                province.html(str);
+            },"json");
+
+            $("#province").change(function () {
+                var province_name = $("#province option select") .val();
+                $.get("CityServlet",{"province":province_name},function (data) {
+                    var city = $("#city");
+                    var str = '<option>--- 请选择 ---</option>';
+                    for (var i = 0; i < data.length; i++) {
+                        var city_name = data[i].name;
+                        str += '<option'+city_name+">"+city_name+'</option>';
+                    }
+                    city.html(str);
+                },"json");
+            })
+        })
+    </script>
+</head>
+<body>
+<select id="province">
+    <option>--- 请选择 ---</option>
+</select>
+<select id="city">
+    <option value="">--- 请选择 ---</option>
+</select>
+</body>
+</html>
